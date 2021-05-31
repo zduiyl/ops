@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  skywalking-oap:
+    image: apache/skywalking-oap-server:8.5.0-es7
+    container_name: skywalking-oap
+    ports:
+      - 11800:11800
+    expose:
+      - "12800"
+      - "11800"
+      - "1234"
+    environment:
+      - SW_STORAGE=elasticsearch7
+      - SW_STORAGE_ES_CLUSTER_NODES=es01:9200
+    networks:
+      elasticsearch_elastic_net:
+        ipv4_address: 172.16.161.130
+    restart: always
+
+  skywalking-ui:
+    image: apache/skywalking-ui:8.5.0
+    container_name: skywalking-ui
+    ports:
+      - 8080:8080
+    expose:
+      - "8080"
+    environment:
+      - SW_OAP_ADDRESS=skywalking-oap:12800
+    networks:
+      elasticsearch_elastic_net:
+        ipv4_address: 172.16.161.101
+    depends_on:
+      - skywalking-oap
+    external_links:
+      - skywalking-oap
+    restart: always
+
+networks:
+  elasticsearch_elastic_net:
+    external: true

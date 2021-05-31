@@ -21,7 +21,8 @@ services:
     ports:
       - 9200:9200
     networks:
-      - elastic_net
+      elastic_net:
+        ipv4_address: 172.16.161.110
     restart: always
 
   es02:
@@ -43,7 +44,8 @@ services:
     volumes:
       - data02:/usr/share/elasticsearch/data
     networks:
-      - elastic_net
+      elastic_net:
+        ipv4_address: 172.16.161.111
     restart: always
 
   es03:
@@ -65,7 +67,8 @@ services:
     volumes:
       - data03:/usr/share/elasticsearch/data
     networks:
-      - elastic_net
+      elastic_net:
+        ipv4_address: 172.16.161.112
     restart: always
 
   kibana:
@@ -82,7 +85,8 @@ services:
     volumes:
       - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
-      - elastic_net
+      elastic_net:
+        ipv4_address: 172.16.161.100
     depends_on:
       - es01
     external_links:
